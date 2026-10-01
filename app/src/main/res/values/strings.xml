@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MorpBox</string>
+    <string name="mesh_channel">MORP mesh</string>
+    <string name="mesh_notif_title">MorpBox mesh is on</string>
+    <string name="mesh_notif_text">Relaying notes, chats and zaps over Bluetooth</string>
+</resources>

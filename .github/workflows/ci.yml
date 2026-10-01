@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+
+jobs:
+  palette:
+    name: Youniversal palette contrast
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify WCAG contrast
+        run: python3 tools/palette_lab.py
+      - name: Verify generator parity
+        run: python3 tools/palette_lab.py --verify
+
+  protocol:
+    name: Python protocol tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install and test
+        working-directory: protocol
+        run: |
+          pip install pynacl coincurve bech32 pytest
+          pip install -e .
+          python -m pytest tests/ -q
+
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install Android platform 36
+        run: |
+          set -u
+          SDK="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-/usr/local/lib/android/sdk}}"
+          "$SDK/cmdline-tools/latest/bin/sdkmanager" --install "platforms;android-36" || true
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Youniversal unit tests
+        run: gradle :youniversal:testDebugUnitTest --stacktrace
+      - name: App unit tests
+        run: gradle :app:testDebugUnitTest --stacktrace
+      - name: Assemble debug APK
+        run: gradle :app:assembleDebug --stacktrace
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: morpbox-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: ignore

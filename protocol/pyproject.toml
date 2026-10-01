@@ -1,0 +1,13 @@
+[project]
+name = "morp-nerd"
+version = "0.1.0"
+description = "MORP NERD reference implementation (Mesh Onion Relay Protocol for Nostr Endpoint Resilient Dissemination)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["pynacl>=1.5", "coincurve>=21.0", "bech32>=1.2"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

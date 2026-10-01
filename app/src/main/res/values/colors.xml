@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background_start">#FF2455CC</color>
+    <color name="ic_launcher_background_end">#FF984723</color>
+    <color name="ic_launcher_mark">#FFFFFFFF</color>
+</resources>
