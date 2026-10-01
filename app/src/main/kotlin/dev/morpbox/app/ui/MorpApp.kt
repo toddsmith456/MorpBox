@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: MIT
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+
 package dev.morpbox.app.ui
 
 import android.Manifest

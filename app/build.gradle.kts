@@ -60,6 +60,9 @@ android {
 kotlin {
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        // YouniversalTopBar's signature mentions TopAppBarScrollBehavior (experimental M3).
+        optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
+        optIn.add("kotlin.RequiresOptIn")
     }
 }
 
