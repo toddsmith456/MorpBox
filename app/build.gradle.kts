@@ -92,4 +92,6 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.core)
     testImplementation(libs.bouncy.castle)
+    // Android's org.json is stubbed on the JVM; this is the real implementation for unit tests.
+    testImplementation("org.json:json:20240303")
 }
